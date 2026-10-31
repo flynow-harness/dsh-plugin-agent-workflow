@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Workflow",
+    "description": "Browse each user turn as a chain of model requests, responses, and tool calls beside Chat and Trajectory."
+  }
+}
