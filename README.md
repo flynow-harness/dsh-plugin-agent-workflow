@@ -77,27 +77,31 @@ npx --yes @deepseek-ai/dsh@0.2.2-alpha.2 plugin \
 npx --yes @deepseek-ai/dsh@0.2.2-alpha.2 web
 ```
 
-### 从 GitHub 安装
+### 从源码构建安装
 
-仓库发布 `v0.4.0` 标签后，可以直接安装固定版本。`web` profile：
+pnpm 11 默认阻止 Git 依赖执行构建脚本（`ERR_PNPM_GIT_DEP_PREPARE_NOT_ALLOWED`），因此推荐从源码构建安装包：
 
 ```sh
-npx --yes @deepseek-ai/dsh@0.2.2-alpha.2 plugin \
-  --profile web \
-  add github:flynow-harness/dsh-plugin-agent-workflow#v0.4.0
+git clone https://github.com/flynow-harness/dsh-plugin-agent-workflow.git
+cd dsh-plugin-agent-workflow
+pnpm install
+pnpm pack
+```
+
+然后把生成的 `dsh-plugin-agent-workflow-0.4.0.tgz` 安装到目标 profile：
+
+```sh
+dsh plugin --profile web add ./dsh-plugin-agent-workflow-0.4.0.tgz
 ```
 
 其他 profile（示例为 `video`）使用相同插件版本：
 
 ```sh
-npx --yes @deepseek-ai/dsh@0.2.2-alpha.2 plugin \
-  --profile video \
-  add github:flynow-harness/dsh-plugin-agent-workflow#v0.4.0
-
+dsh plugin --profile video add ./dsh-plugin-agent-workflow-0.4.0.tgz
 pnpm dsh --profile video
 ```
 
-固定 Release 标签或 commit 可以避免安装内容随分支变化。只有在信任源码的情况下，才应允许包管理器执行 Git 依赖的构建脚本。
+直接安装 `github:` 写法需要包管理器允许该 Git 依赖执行构建脚本（`pnpm-workspace.yaml` 的 `allowBuilds` 需按解析后的 tarball 地址逐条声明）。只有在你信任源码时才应放行。
 
 ## 卸载
 
